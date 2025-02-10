@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: gray;
+            cursor: not-allowed;
+        }
+        .response {
+            margin-top: 15px;
+            min-height: 60px;
+            color: #333;
+            text-align: left;
+            border: 1px solid #ccc;
+            padding: 12px;
+            border-radius: 6px;
+            background: #fafafa;
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ask AI 🤖</h2>
+        <input type="text" id="query" placeholder="Enter your query...">
+        <button id="submit">Submit</button>
+        <div class="response" id="response"></div>
+    </div>
+
+    <script>
+        document.getElementById("submit").addEventListener("click", async function() {
+            const query = document.getElementById("query").value.trim();
+            const responseDiv = document.getElementById("response");
+            if (!query) return;
+
+            this.disabled = true;
+            responseDiv.innerHTML = "🤖 Thinking...";
+            
+            try {
+                const response = await fetch(`http://localhost:8080/ai/stream?query=${encodeURIComponent(query)}`);
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                
+                responseDiv.innerHTML = ""; // Clear before new response
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    responseDiv.innerHTML += decoder.decode(value, { stream: true });
+                }
+            } catch (error) {
+                responseDiv.innerHTML = "⚠️ Error fetching response. Please try again.";
+            }
+            this.disabled = false;
+        });
+    </script>
+</body>
+</html>

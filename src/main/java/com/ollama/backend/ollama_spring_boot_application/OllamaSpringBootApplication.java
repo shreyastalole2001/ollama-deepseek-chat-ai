@@ -8,6 +8,7 @@ public class OllamaSpringBootApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(OllamaSpringBootApplication.class, args);
+		System.out.println("Application is live");
 	}
 
 }
