@@ -28,5 +28,5 @@ Sends a user query to the AI and streams the response.
 ```sh
 GET http://localhost:8080/ai/stream?query=What is AI?
 
+![image](https://github.com/user-attachments/assets/13170b25-04cc-4768-99e9-9a66243d25e4)
 
-![image](https://github.com/user-attachments/assets/2c1ed41a-c911-4da0-95a2-95a44cd46673)
