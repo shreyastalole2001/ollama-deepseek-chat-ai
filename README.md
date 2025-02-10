@@ -27,6 +27,8 @@ Sends a user query to the AI and streams the response.
 #### **Request Example:**  
 ```sh
 GET http://localhost:8080/ai/stream?query=What is AI?
+```
 
 ![image](https://github.com/user-attachments/assets/13170b25-04cc-4768-99e9-9a66243d25e4)
+
 
